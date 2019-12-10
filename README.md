@@ -5,6 +5,11 @@ Set it up using this cloudformation template!
 
 
 ## Getting started guide
+This project will:
+* download the wiremock jar
+* configure it to run in elastic beanstalk
+* deploy wiremock on elastic beanstalk
+
 Update the BucketName in `deploy.sh` and `update.sh` to the name of the bucket you which to create and use for this project.  
 Update the region if necessary.
 
