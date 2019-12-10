@@ -17,11 +17,12 @@ Update the region if necessary.
 Create the stack by running the following command.  
 `./deploy.sh`
 
-You successfully setup your wiremock!
+You successfully setup your wiremock! Go to the AWS elastic beanstalk console and check it out!
 
 ![success](.images/light.png)
 
 ### Update
+If you do updates in the cloudformation template:  
 `./update.sh`
 
 
