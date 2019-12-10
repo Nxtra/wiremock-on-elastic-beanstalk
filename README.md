@@ -5,7 +5,7 @@ Set it up using this cloudformation template!
 
 
 ## Getting started guide
-Update the BucketName in `deploy.sh` and `update.sh` to the name of the bucket you which to create and use for this project.
+Update the BucketName in `deploy.sh` and `update.sh` to the name of the bucket you which to create and use for this project.  
 Update the region if necessary.
 
 ### Deploy
@@ -23,10 +23,10 @@ You successfully setup your wiremock!
 ## More
 ### Outputs
 The stack outputs the wiremock URLs pointing to the admin console.
-Will be something like:
+Will be something like:  
 `http://awseb-e-u-AWSEBLoa-156X2H7XR44UD-1378767710.eu-west-1.elb.amazonaws.com/__admin`
 
-You can find the outputs, eg. the `/requests` endpoint.
+You can find the outputs, eg. the `/mappings` endpoint.
 
 `aws cloudformation --region eu-west-1 describe-stacks --stack-name wiremock --query "Stacks[0].Outputs[?OutputKey=='WiremockMappingsURL'].OutputValue" --output text`
 
