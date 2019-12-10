@@ -17,7 +17,7 @@ Parameters:
     Type: String
     Default: wiremock.zip
     Description: Enter the key of your wiremock jar file
-
+    
 Resources:
   wiremockApplication:
     Type: AWS::ElasticBeanstalk::Application
@@ -61,24 +61,21 @@ Resources:
       VersionLabel: !Ref wiremockApplicationVersion
 
 Outputs:
-  WiremockBase:
-    Description: Base URL for wiremock
-    Value: !GetAtt wiremockEnvironment.EndpointURL
-  WiremockMappings:
+  WiremockAdminURL:
     Description: Wiremock admin console URL
     Value: !Join
       - ''
       - - http://
         - !GetAtt wiremockEnvironment.EndpointURL
         - '/__admin'
-  WiremockMappings:
+  WiremockMappingsURL:
     Description: Wiremock mappings URL
     Value: !Join
       - ''
       - - http://
         - !GetAtt wiremockEnvironment.EndpointURL
         - '/__admin/mappings'
-  WiremockRequests:
+  WiremockRequestsURL:
     Description: Wiremock requests URL
     Value: !Join
       - ''
