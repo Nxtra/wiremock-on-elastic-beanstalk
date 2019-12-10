@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters: 
+  Description: 
+    Type: String
+    Description: Wiremock on elastic
+    Default: "Wiremock on Elastic Beanstalk"
+  CNAMEPrefix:
+    Type: String
+    Description: Prefix to be used in the generated CNAME
+    Default: wiremock
+  S3Bucket: 
+    Type: String
+    Default: wiremock-elastic-beanstalk
+    Description: Enter the name of your s3 bucket
+  S3Key: 
+    Type: String
+    Default: wiremock.zip
+    Description: Enter the key of your wiremock jar file
+
+Resources:
+  wiremockApplication:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: wiremock-application
+      Description: AWS Elastic Beanstalk Wiremock Application
+
+  wiremockApplicationVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName: !Ref wiremockApplication
+      Description: AWS ElasticBeanstalk Wiremock Application Version
+      SourceBundle:
+        S3Bucket: !Ref S3Bucket
+        S3Key: !Ref S3Key
+
+  wiremockConfigurationTemplate:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties:
+      ApplicationName: !Ref wiremockApplication
+      Description: AWS ElasticBeanstalk Wiremock Configuration Template
+      SolutionStackName: 64bit Amazon Linux 2018.03 v2.10.1 running Java 8
+      OptionSettings:
+      - Namespace: aws:autoscaling:asg
+        OptionName: MinSize
+        Value: '1'
+      - Namespace: aws:autoscaling:asg
+        OptionName: MaxSize
+        Value: '1'
+      - Namespace: aws:elasticbeanstalk:environment
+        OptionName: EnvironmentType
+        Value: LoadBalanced
+
+  wiremockEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName: !Ref wiremockApplication
+      Description: AWS ElasticBeanstalk Wiremock Environment
+      CNAMEPrefix: !Ref CNAMEPrefix
+      TemplateName: !Ref wiremockConfigurationTemplate
+      VersionLabel: !Ref wiremockApplicationVersion
+
+Outputs:
+  WiremockBase:
+    Description: Base URL for wiremock
+    Value: !GetAtt wiremockEnvironment.EndpointURL
+  WiremockMappings:
+    Description: Wiremock admin console URL
+    Value: !Join
+      - ''
+      - - http://
+        - !GetAtt wiremockEnvironment.EndpointURL
+        - '/__admin'
+  WiremockMappings:
+    Description: Wiremock mappings URL
+    Value: !Join
+      - ''
+      - - http://
+        - !GetAtt wiremockEnvironment.EndpointURL
+        - '/__admin/mappings'
+  WiremockRequests:
+    Description: Wiremock requests URL
+    Value: !Join
+      - ''
+      - - http://
+        - !GetAtt wiremockEnvironment.EndpointURL
+        - '/__admin/requests'
+  WiremockBaseURL:
+    Description: The URL of the Elastic Beanstalk environment
+    Value:
+      Fn::Join:
+      - ''
+      - - http://
+        - Fn::GetAtt:
+          - wiremockEnvironment
+          - EndpointURL
