@@ -8,7 +8,7 @@ BUCKET="wiremock-elastic-beanstalk"
 REGION="eu-west-1"
 STACKNAME="wiremock"
 
-echo "Deploying with parameters: profile=${PROFILE}, bucket=${BUCKET}"
+echo "Deploying with parameters: profile=${PROFILE}, bucket=${BUCKET}, stackname=${STACKNAME}"
 
 curl http://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.25.1/wiremock-standalone-2.25.1.jar --output wiremock.jar
 
